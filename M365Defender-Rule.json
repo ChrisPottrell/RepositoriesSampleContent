@@ -1,27 +1,84 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "workspace": {
-            "type": "String"
+    "Scheduled": [
+      {
+        "displayName": "AlertRule01",
+        "description": "",
+        "severity": "Medium",
+        "enabled": true,
+        "query": "SecurityEvent | where EventID == \"4688\" | where CommandLine contains \"-noni -ep bypass $\"",
+        "queryFrequency": "4H",
+        "queryPeriod": "6H",
+        "triggerOperator": "GreaterThan",
+        "triggerThreshold": 5,
+        "suppressionDuration": "6H",
+        "suppressionEnabled": false,
+        "tactics": [
+          "Persistence",
+          "LateralMovement",
+          "Collection"
+        ],
+        "playbookName": "",
+        "aggregationKind": "SingleAlert",
+        "createIncident": true,
+        "groupingConfiguration": {
+          "enabled": false,
+          "reopenClosedIncident": false,
+          "lookbackDuration": "PT5H",
+          "entitiesMatchingMethod": "All",
+          "groupByEntities": [
+            "Account",
+            "Ip",
+            "Host",
+            "Url"
+          ]
         }
-    },
-    "resources": [
-        {
-            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/f7dff091-3591-482a-a229-17939a331bc4')]",
-            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/f7dff091-3591-482a-a229-17939a331bc4')]",
-            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
-            "kind": "MicrosoftSecurityIncidentCreation",
-            "apiVersion": "2022-09-01-preview",
-            "properties": {
-                "displayName": "Create incidents based on Microsoft Defender for Office 365 alerts",
-                "description": "Create incidents based on all alerts generated in Microsoft Defender for Office 365",
-                "enabled": true,
-                "severitiesFilter": null,
-                "displayNamesFilter": null,
-                "displayNamesExcludeFilter": null,
-                "alertRuleTemplateName": "ee1d718b-9ed9-4a71-90cd-a483a4f008df"
-            }
-        }
+      },
+      {
+        "displayName": "AlertRule02",
+        "description": "",
+        "severity": "Medium",
+        "enabled": true,
+        "query": "SecurityEvent | where EventID == \"4688\" | where CommandLine contains \"-noni -ep bypass $\"",
+        "queryFrequency": "5H",
+        "queryPeriod": "5H",
+        "triggerOperator": "GreaterThan",
+        "triggerThreshold": 5,
+        "suppressionDuration": "6H",
+        "suppressionEnabled": false,
+        "tactics": [
+          "Persistence",
+          "LateralMovement",
+          "Collection"
+        ],
+        "playbookName": ""
+      }
+    ],
+    "Fusion": [
+      {
+        "displayName": "Advanced Multistage Attack Detection",
+        "enabled": true,
+        "alertRuleTemplateName": "f71aba3d-28fb-450b-b192-4e76a83015c8"
+      }
+    ],
+    "MLBehaviorAnalytics": [
+      {
+        "displayName": "(Preview) Anomalous SSH Login Detection",
+        "enabled": true,
+        "alertRuleTemplateName": "fa118b98-de46-4e94-87f9-8e6d5060b60b"
+      }
+    ],
+    "MicrosoftSecurityIncidentCreation": [
+      {
+        "displayName": "Create incidents based on Azure Active Directory Identity Protection alerts",
+        "description": "Create incidents based on all alerts generated in Azure Active Directory Identity Protection",
+        "enabled": true,
+        "productFilter": "Azure Active Directory Identity Protection",
+        "severitiesFilter": [
+          "High",
+          "Medium",
+          "Low"
+        ],
+        "displayNamesFilter": null
+      }
     ]
-}
+  }
